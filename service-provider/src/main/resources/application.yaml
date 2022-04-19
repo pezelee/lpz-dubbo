@@ -1,0 +1,52 @@
+server:
+  port: 8072
+  servlet:
+    context-path:
+# dubbo 配置项，对应 DubboConfigurationProperties 配置类
+dubbo:
+  # Dubbo 应用配置
+  application:
+    name: service-provider # 应用名
+  # Dubbo 注册中心配
+  registry:
+    address: zookeeper://127.0.0.1:2181 # 注册中心地址。个鞥多注册中心，可见 http://dubbo.apache.org/zh-cn/docs/user/references/registry/introduction.html 文档。
+  # Dubbo 服务提供者协议配置
+  protocol:
+    port: -1 # 协议端口。使用 -1 表示随机端口。
+    name: dubbo # 使用 `dubbo://` 协议。更多协议，可见 http://dubbo.apache.org/zh-cn/docs/user/references/protocol/introduction.html 文档
+  # Dubbo 服务提供者配置
+  provider:
+    timeout: 1000 # 【重要】远程服务调用超时时间，单位：毫秒。默认为 1000 毫秒，胖友可以根据自己业务修改
+    filter: -exception # 去掉 ExceptionFilter
+    DayService:
+      version: 1.0.0
+    WeatherService:
+      version: 1.0.0
+
+spring:
+  # datasource 数据源配置内容
+  datasource:
+    url: jdbc:mysql://47.108.219.78/lpz?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: iorg
+    password: Zhonghezhihui&1007
+
+# mybatis-plus 配置内容
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true # 虽然默认为 true ，但是还是显示去指定下。
+  global-config:
+    db-config:
+      id-type: auto # ID 主键自增
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: lpz.entity
+
+# logging
+logging:
+  level:
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: trace
+    # dao 开启 debug 模式 mybatis 输入 sql
+    lpz:
+      mapper: trace
